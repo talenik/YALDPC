@@ -1,6 +1,8 @@
 # YALDPC
 
-## Yet another LDPC MEX toolkit for MATLAB (and perhaps even GNU Octave) contains:
+## Yet another LDPC MEX toolkit for MATLAB 
+### (and perhaps even GNU Octave) 
+### contains:
 
 1. Hbm matrices of QC-LDPC codes used in Wi-Fi 6 and WiMAX standards (IEEE802.11-2020 and IEEE 802.16-2017).
 
