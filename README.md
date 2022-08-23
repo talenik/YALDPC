@@ -1,6 +1,6 @@
 # YALDPC
 
-Yet another LDPC MEX toolkit for MATLAB (and perhaps even GNU Octave) contains:
+## Yet another LDPC MEX toolkit for MATLAB (and perhaps even GNU Octave) contains:
 
 1. Hbm matrices of QC-LDPC codes used in Wi-Fi 6 and WiMAX standards (IEEE802.11-2020 and IEEE 802.16-2017).
 
@@ -15,6 +15,8 @@ Yet another LDPC MEX toolkit for MATLAB (and perhaps even GNU Octave) contains:
 All files released under the BSD licence.
 In order to use the MEX files, you need MATLAB. If you're only interested in using 1, 2, and 3 no proprietary software is needed.
 
+## To run it from MATLAB:
+
 To just generate ldpc.h and ldpc.c with important code/encoder/decoder defines run createHeaderFile.m, this should also work in GNU Octave.
 
 To test the encoder and see examples of how it's used run testEnc.m
@@ -26,9 +28,19 @@ To run a set of waterfall simulations for a 'bitmap' encoder run simBitmap.m.
 To run a decoder benchmark and compare it to the ldpcDecode() Communications Toolbox run benchmarDecoder.m.
 
 Tested on: Ubuntu 18.04 LTS MATLAB R2021b and Ubuntu 20.04 LTS MATLAB R2022a
+
+## To run it from Linux terminal:
+
+Compile CLI benchmark: 
+```
+cd MEX
+c99 -O3 -DNDEBUG -o main main.c decoder.c encoder.c ldpc.c debug.c ; ./main
+```
+A single-thread benchmark should take about a minute.
+
 May also work on Windows, who cares ? :)
 
-Reading:
+## Reading:
 
 1. Gallager, Robert G. Low-Density Parity-Check Codes. Cambridge, MA: MIT Press, 1963
 
