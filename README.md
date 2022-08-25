@@ -42,6 +42,11 @@ A single-thread benchmark should take about a minute.
 
 May also work on Windows, who cares ? :)
 
+## Simulation results for WiFi 6 LDPC codes
+![WiFi6 LDPC waterfalls](/res/WTF_WIFI6.PNG)
+
+AWGN channel and BPSK modulation. N = 1944, R = 1/2, 2/3, 3/4, 5/6. Max. 10 decoder iterations. 
+
 ## Reading:
 
 1. Gallager, Robert G. Low-Density Parity-Check Codes. Cambridge, MA: MIT Press, 1963
