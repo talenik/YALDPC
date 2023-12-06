@@ -4,5 +4,11 @@ function gmax = findGMAX( Hbm )
 %
 %	GMAX = findGMAX( Hbm )
 
-Gs		= sum( Hbm > -1, 2 ) ;
-gmax	= max( Gs ) ;
+if ~isBinary( Hbm )
+	%actually Hbm
+	Gs		= sum( Hbm > -1, 2 ) ;
+	gmax	= max( Gs ) ;
+else
+	%actually H
+	gmax = full( max( sum( Hbm, 2 ) ) );
+end
