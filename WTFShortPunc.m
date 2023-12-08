@@ -1,10 +1,10 @@
-function res = WTF2( code, enc, dec, sim, shortIdx, puncIdx )
+function res = WTFShortPunc( code, enc, dec, sim, shortIdx, puncIdx )
 % WTF2 - calculate watefall curve BER -vs- Eb/N0 
 %		for BPSK modulation and AWGN channel
 %		encoder is using 'array' data representation
 %		works for all code parameters and both wifi and wimax standards
 % 
-%	sim = WTF2()
+%	sim = WTFShortPunc()
 %		return default simulation paramaters, many can be changed:
 %		sim.minErr - minimum number of error collected per Eb/N0 point
 %		sim.blkSize - nr. of codewords per block 
