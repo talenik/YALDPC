@@ -131,15 +131,24 @@ static unsigned setSign( uint32_t signBuf, unsigned bit, int index ){
 }
 
 
-void MSInitDecoder( int niter, FP norm, FP offset, int termination ){
+void MSInitDecoder( int niter, FP norm, FP offset, int termination, int singleOne ){
 	NIter 		= niter ;
-	Lambda 		= norm ;
+	Lambda 	= norm ;
 	Beta 		= offset ;
 	Termination = termination ;
 
 	dbg( 1, "NITer: %d, Lambda: %f, Beta: %f \n", NIter, Lambda, Beta ) ;
 
-	initCheckIndices() ;
+	if( singleOne ){
+		initCheckIndices() ;
+	}else{
+		//CCSDS - just copy values from precompiled arrays
+		assert( sizeof( CH_S ) == sizeof( CH_SI ) ) ;
+		assert( sizeof( CH_IND ) == sizeof( CH_II ) ) ;		
+
+		memcpy( ( void * )CH_S,   ( const void *)CH_SI, sizeof( CH_S ) ) ;
+		memcpy( ( void * )CH_IND, ( const void *)CH_II, sizeof( CH_IND ) ) ;		
+	}
 }
 
 

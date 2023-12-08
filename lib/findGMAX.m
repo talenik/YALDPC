@@ -5,7 +5,7 @@ function gmax = findGMAX( Hbm )
 %	GMAX = findGMAX( Hbm )
 
 if ~isBinary( Hbm )
-	%actually Hbm
+	%actual Hbm
 	Gs		= sum( Hbm > -1, 2 ) ;
 	gmax	= max( Gs ) ;
 else

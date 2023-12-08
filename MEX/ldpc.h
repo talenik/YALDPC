@@ -3,30 +3,33 @@
 #ifndef QC_LDPC
 #define QC_LDPC
 
+//Communication standard: 0 > WiMAX, 1> WiFi6, 2> CCSDS, 3> 5G 
+#define STD 2 
+
 //Values in bits:
-#define N 1944 
-#define K 1458 
-#define M 486 
+#define N 5632 
+#define K 4096 
+#define M 1536 
 
 //WIMAX: Z divisible by 4,in (24, ..., 96 ) WIFI6:  Z in ( 27, 54, 81 )
-#define Z 81 
+#define Z 512 
 
 //Values in blocks of bits of size Z:
-#define NB 24 	// should be 24
-#define KB 18 
-#define MB 6 
+#define NB 11 	// should be 24
+#define KB 8 
+#define MB 3 
 
 //Model matrix assumed to be already scaled:
 extern const int8_t HBM[ MB ][ NB ] ; 
 
 //Encoder paramaters:
-typedef uint8_t WORD ;
-#define WB 8 		//word size in bits
-#define WBE 3 		//WB exponent: WB == 2^WBE
-#define ZW 10 		//Z in words
-#define NW 243 		//must be integral multiple of ZW
-#define MW 60.75 		//must be integral multiple of ZW
-#define KW 182 		//must work together with MWF
+typedef uint32_t WORD ;
+#define WB 32 		//word size in bits
+#define WBE 5 		//WB exponent: WB == 2^WBE
+#define ZW 16 		//Z in words
+#define NW 176 		//must be integral multiple of ZW
+#define MW 48 		//must be integral multiple of ZW
+#define KW 128 		//must work together with MWF
 
 #undef BITMAP 		//determines 'array' or 'bitmap' implementation
 
@@ -40,20 +43,24 @@ typedef BLOCK *BLOCK_P ;
 
 
 //Decoder parameters:
-#define G_MAX 15 
+#define G_MAX 18 
 
+
+//Index arrays:
+extern const int8_t CH_SI[ M ] ; 
+extern const int16_t CH_II[ M ][ G_MAX ] ; 
 #undef FIXED //determines floating point or fixed point decoder
 
 typedef float FP ; 
 #define FP_MAX FLT_MAX
-#define N_TH 32 //nr. of decoder threads
+#define N_TH 1 //nr. of decoder threads
 
 //Definitions for MEX:
 
 //Encoder:
-#define UINTXY mxUint8 
-#define UINTXY_CLASS mxUINT8_CLASS 
-#define GET_UINTXY mxGetUint8s 
+#define UINTXY mxUint32 
+#define UINTXY_CLASS mxUINT32_CLASS 
+#define GET_UINTXY mxGetUint32s 
 
 
 //Decoder:

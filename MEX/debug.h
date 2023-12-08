@@ -67,6 +67,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	extern void debug( int l, const char *format, ... ) ;
 
 	extern void debugArray( int l, const char *name, int *array, int r, int c, int w ) ;
+	extern void debugI8Array( int l, const char *name, int8_t *array, int r, int c, int w ) ;
+	extern void debugI16Array( int l, const char *name, int16_t *array, int r, int c, int w ) ;
 
 	extern void word2string( unsigned char *str, WORD val, unsigned width ) ;
 	extern void debugBinary( int l, WORD *A, int size, const char *lab ) ;

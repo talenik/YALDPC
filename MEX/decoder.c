@@ -67,8 +67,8 @@ static int 	Termination = 1 ;		// 1 > terminate when converged, 0 > allways do a
 
 
 //indices to H matrix for easy access:
-static int8_t 	CH_S[ M ] ;				//actual N(m) sizes for each check
-static int16_t 	CH_IND[ M ][ G_MAX ] ;	//absolute indices of variables for each check
+static int8_t  CH_S[ M ] ;			//actual N(m) sizes for each check
+static int16_t CH_IND[ M ][ G_MAX ] ;		//absolute indices of variables for each check
 
 static FP ZNold[ N ] ;				// aka Zn(k-1)
 
@@ -133,9 +133,9 @@ static unsigned setSign( uint32_t signBuf, unsigned bit, int index ){
 }
 
 
-void MSInitDecoder( int niter, FP norm, FP offset, int termination ){
+void MSInitDecoder( int niter, FP norm, FP offset, int termination, int singleOne ){
 	NIter 		= niter ;
-	Lambda 		= norm ;
+	Lambda 	= norm ;
 	Beta 		= offset ;
 	Termination = termination ;
 
@@ -144,8 +144,49 @@ void MSInitDecoder( int niter, FP norm, FP offset, int termination ){
 	
 	dbg( 1, "NITer: %d, Lambda: %f, Beta: %f \n", NIter, Lambda, Beta ) ;
 
-	initCheckIndices() ;
+	if( singleOne ){
+		//WiFi and WIMAX standards
+		initCheckIndices() ;
+	}else{
+		//CCSDS - just copy values from precompiled arrays
+		assert( sizeof( CH_S ) == sizeof( CH_SI ) ) ;
+		assert( sizeof( CH_IND ) == sizeof( CH_II ) ) ;		
+
+		memcpy( ( void * )CH_S,   ( const void *)CH_SI, sizeof( CH_S ) ) ;
+		memcpy( ( void * )CH_IND, ( const void *)CH_II, sizeof( CH_IND ) ) ;		
+	}
+	
 }
+
+/*
+int MSInitIndices( int rs, int8_t *ch_s, int ci, int16_t *ch_i ){
+	int i, j, t ;
+	
+	assert( rs == M ) ;
+	
+	if( rs != M )
+		return -1 ;
+		
+	for( i = 0 ; i < rs ; i++ ){
+		CH_S[ i ] = *( ch_s + i ) ;
+		assert( CH_S[ i ] < G_MAX ) ;
+		if( CH_S[ i ] >= G_MAX)
+			return -2 ; 
+		
+		for( j = 0 ; j < CH_S[ i ] ; j++ ){
+			//watch out - MATLAB column-major storage
+			t = ch_i[ rs * j + i ] ;
+			
+			assert( t < CH_S[ i ] ) ;
+			if( t >= CH_S[ i ] )
+				return -3 ;
+			
+			CH_IND[ i ][ j ] = t  ;
+		}
+	}
+	
+	return 0 ;
+}*/
 
 /*
 * LLch are the channel log likelihoods for the received block
@@ -325,13 +366,15 @@ static void checkMinSum( int m, int mb, int iter ){
 		LS[ m ] = setSign( LS[ m ], s, i ) ;
 		sgnPrd  ^= s ;
 
-		if( a <= min1 ){
-			min2 = min1 ;
-			min1 = a ;
-			midx = i ;
-		}else{
-			if( a < min2 ){
-				min2 = a ;
+		if( a > 0.0f ){
+			if( a <= min1 ){
+				min2 = min1 ;
+				min1 = a ;
+				midx = i ;
+			}else{
+				if( a < min2 ){
+					min2 = a ;
+				}
 			}
 		}
 	}

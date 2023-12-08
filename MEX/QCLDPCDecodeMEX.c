@@ -164,6 +164,7 @@ int decodeMT( FP *in, FP *out, double *ite, int n, int c, WORD *hd ){
 
 		int i, n ;
 		double *iter = NULL ;
+		int singleOne = -1 ;
 
 		if( nrhs != 2 ) {
 			mexErrMsgIdAndTxt("LDPCMSDecodeMEX:nrhs", "Two inputs required: channel LLR and options.") ;
@@ -177,7 +178,7 @@ int decodeMT( FP *in, FP *out, double *ite, int n, int c, WORD *hd ){
 			mexErrMsgIdAndTxt("LDPCMSDecodeMEX:notFP_CLASS", "The first input must be of FP type.") ;
 		}
 		
-    	llrch 	= ( FP * ) GET_FP( prhs[ 0 ] ) ;
+    		llrch 	= ( FP * ) GET_FP( prhs[ 0 ] ) ;
 		
 		n		= ( int ) mxGetM( prhs[ 0 ] ) ;
 		NChan	= ( int ) mxGetN( prhs[ 0 ] ) ;
@@ -207,7 +208,7 @@ int decodeMT( FP *in, FP *out, double *ite, int n, int c, WORD *hd ){
 
 		dbg( 1, "Compiled in params:\n  N: %d, K: %d, M: %d, Z: %d, NB: %d, KB: %d, MB: %d, G_MAX: %d, N_TH: %d \n", N, K, M, Z, NB, KB, MB, G_MAX, N_TH ) ;
 		
-		debugArray( 1, "HBM:", ( int * ) HBM, MB, NB, 3 ) ;
+		debugI8Array( 1, "HBM:", ( int8_t * ) HBM, MB, NB, 3 ) ;
 
 		if( ( plhs[ 0 ] = mxCreateNumericMatrix( n, NChan, FP_CLASS, mxREAL ) ) == NULL ){
 			mexErrMsgIdAndTxt("LDPCMSDecodeMEX:outputFail", "Allocating output matrix aLLR for MATLAB failed.") ;
@@ -219,8 +220,13 @@ int decodeMT( FP *in, FP *out, double *ite, int n, int c, WORD *hd ){
 
 		allr = ( FP * )GET_FP( plhs[ 0 ] ) ;
 		iter = mxGetDoubles( plhs[ 1 ] ) ;
-
-		MSInitDecoder( NIter, Lambda, Beta, Termination ) ;
+		
+		
+		singleOne = ( STD < 2 ? 1 : 0 ) ;
+		
+		MSInitDecoder( NIter, Lambda, Beta, Termination, singleOne ) ;
+		
+		//TODO maybe debug also CH_S and CH_IND buffers
 
 
 		if( N_TH == 1 ){

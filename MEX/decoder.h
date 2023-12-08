@@ -46,7 +46,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define QCLDPCDEC
 
 // initialize decoder parameters and index arrays
-extern void MSInitDecoder( int niter, FP norm, FP offset, int termination ) ;
+extern void MSInitDecoder( int niter, FP norm, FP offset, int termination, int singleOne ) ;
+
+//extern int MSInitIndices( int rs, int8_t *ch_s, int ci, int16_t *ch_i ) ;
 
 /*
  	 actuall layered single-scan min-sum

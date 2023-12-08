@@ -13,6 +13,7 @@ function s = rate2str( r )
 	elseif r == 5 / 6
 		s = '56' ;
 	else
-		error('Rate unsupported.') ;
+		s = num2str( r ) ;
+		s = strrep( s, '.', '_') ;
 	end
 end

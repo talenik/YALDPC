@@ -1,4 +1,4 @@
-function buildMEXfile( desc )
+function ok = buildMEXfile( desc )
 %buildMEXfile - build a MEX module out of a descriptor desc
 %
 %	buildMEXfile( desc )
@@ -18,7 +18,12 @@ function buildMEXfile( desc )
 %
 %	for more details and assumptions see: edit buildMEXfile 
 
-	cd MEX ;
+	cwd = pwd ;
+	if isfield( desc, 'mexpath')
+		cd( desc.mexpath ) ;
+	else
+		cd MEX ;
+	end
 
 	clear( desc.mexfun ) ;
 	mexfile = [ desc.mexfun '.' mexext ] ;
@@ -73,6 +78,7 @@ function buildMEXfile( desc )
 	disp( cmd ) ;
 	eval( cmd ) ;
 	
-	cd .. ; %TODO: return to current dir fails even if mex fails
+	cd( cwd ) ; %TODO: return to current dir fails even if MEX fails
+	ok = true ;
 end
 

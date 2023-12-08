@@ -85,6 +85,36 @@ void debugArray( int l, const char *name, int *array, int r, int c, int w ){
 	dbg( l, "\n") ;
 }
 
+void debugI8Array( int l, const char *name, int8_t *array, int r, int c, int w ){
+	char format[10] ;
+	sprintf( format, " %%%dd", w ) ;
+
+	dbg( l, "%s\n", name ) ;
+	for( int i = 0 ; i < r ; i++ ){
+		for( int j = 0 ; j < c ; j++ ){
+				dbg( l, format, (int8_t)(*array) ) ;
+			array++ ;
+		}
+		dbg( l, "\n") ;
+	}
+	dbg( l, "\n") ;
+}
+
+void debugI16Array( int l, const char *name, int16_t *array, int r, int c, int w ){
+	char format[10] ;
+	sprintf( format, " %%%dd", w ) ;
+
+	dbg( l, "%s\n", name ) ;
+	for( int i = 0 ; i < r ; i++ ){
+		for( int j = 0 ; j < c ; j++ ){
+				dbg( l, format, (int16_t)(*array) ) ;
+			array++ ;
+		}
+		dbg( l, "\n") ;
+	}
+	dbg( l, "\n") ;
+}
+
 void word2string( unsigned char *str, WORD val, unsigned width ) {
 	char c[2] = { '0', '1' } ;
 	int i ;

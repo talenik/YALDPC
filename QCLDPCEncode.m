@@ -47,8 +47,6 @@ function CW = QCLDPCEncode( p1, p2, p3 )
 	dopts.type		= 'uint8' ;
 	dopts = bitmapParams( dopts.type, dopts ) ;
 
-
-
 	%dopts = mergeStructs( dopts, bopts ) ;
 	
 	if nargin == 0
@@ -65,7 +63,13 @@ function CW = QCLDPCEncode( p1, p2, p3 )
 	elseif nargin == 3
 		%actual encoding
 		if paramsOK( p2, p3 )
-			CW = encode( p1, p3 ) ;
+			code = p2 ;
+			if isequal( code.std, 'ccsds' )
+				%TODO: MEX file not yet implemented
+				CW = mod( code.G' * p1, 2 ) ;
+			else
+				CW = encode( p1, p3 ) ;
+			end
 		end
 	else
 		error('Unsupported parameters combination. See help for usage.')
@@ -74,11 +78,11 @@ end
 
 function OK = paramsOK( code, enc )
 	
-	if strcmp( code.std, 'wifi' )
+	if strcmp( code.std, 'wifi6' )
 		if strcmp( enc.method, 'bitmap' )
 			error( "Bitmap encoding unsupported for WIFI parameters.") ;
 		end
-	elseif strcmp( code.std, 'wimax' )
+	elseif strcmp( code.std, 'wimax' ) || strcmp( code.std, 'ccsds' )
 		if strcmp( enc.method, 'bitmap' )
 			%only select subset of code parameters supported
 			if mod( code.N, enc.wb ) ~= 0 || mod( code.K, enc.wb ) ~= 0 || mod( code.M, enc.wb ) ~= 0
@@ -86,7 +90,7 @@ function OK = paramsOK( code, enc )
 			end
 		end
 	else
-		error( "Unsupported standard, set: 'wimax' of 'wifi'.") ;
+		error( "Unsupported standard, set: 'wimax' of 'wifi6'.") ;
 	end
 
 	OK = true ;
@@ -137,7 +141,12 @@ function encoder = bitmapParams( t , encoder )
 		case 'uint8'
 			w				= 8 ;
 			encoder.ctype	= 'uint8_t' ;
-
+		case 'single'
+			w				= 32 ;
+			encoder.ctype	= 'uint32_t' ;	%FIXME
+		case 'double'
+			w				= 64 ;
+			encoder.ctype	= 'uint64_t' ;	%FIXME
 		otherwise
 			error('Unsupported type.') ;
 	end

@@ -97,13 +97,26 @@ dopts = setMethodParams( dopts.method, dopts ) ;
 	%call MEX file 
 	term	= double( strcmp( dec.term, 'early' ) ) ;
 	Options = [ dec.nIter, dec.lambda, dec.beta, dec.dbglev, term ] ;
-	
+
+	%TODO: extra parameters for truly universal decoder
+	if isfield( dec, 'code' )
+		code = dec.code ;
+		if isfield( code, 'CH_S' )
+			CH_S  = int8( code.CH_S ) ;
+			CH_I  = int16( code.CH_I ) ;
+		else
+			CH_S = int8( 0 ) ;
+			CH_I = int16( 0 ) ;
+		end
+
+	end
+
 	if strcmp( dec.method, 'fixed')
 		t		= class( LLch ) ;
 		LLchQ	= int16( float2int( LLch, dec.qbits, dec.fp_max ) ) ;
 		
 		if hd
-			[ IApLLR, nIter, HD ] = QCLDPCDecodeMEX( LLchQ, Options ) ;
+			[ IApLLR, nIter, HD ] = QCLDPCDecodeMEX( LLchQ, Options) ;
 		else
 			[ IApLLR, nIter ] = QCLDPCDecodeMEX( LLchQ, Options ) ;
 		end
